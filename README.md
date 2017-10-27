@@ -8,9 +8,6 @@ add this code after "if($post) {"
 Mage::dispatchEvent('controller_action_postdispatch_onestepcheckout_index_save', array('post' => $post, 'controller_action' => $this));
 
 
-# Use:
-Go to System configurations > Dreamcode Extension > Delivery Shipping Rule
-
 
 # Open file "js/mw_onestepcheckout/view.js"
 
@@ -45,3 +42,8 @@ view_onestep_deliverytime_method    = new OneStep.Views.DeliverytimeMethod();
 add this code after "view_onestep_shipping_method,":
 
 view_onestep_deliverytime_method,
+
+
+
+# Use:
+Go to System configurations > Dreamcode Extension > Delivery Shipping Rule
