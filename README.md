@@ -11,7 +11,7 @@ Mage::dispatchEvent('controller_action_postdispatch_onestepcheckout_index_save',
 
 # Open file "js/mw_onestepcheckout/view.js"
 
-Add this code before "OneStep.Views.Shipping  = Backbone.View.extend({" :
+#1 Add this code before "OneStep.Views.Shipping  = Backbone.View.extend({" :
 
 OneStep.Views.DeliverytimeMethod    = Backbone.View.extend({
     el: window.OneStep.$("#delivery_date_load"),
@@ -35,11 +35,11 @@ OneStep.Views.DeliverytimeMethod    = Backbone.View.extend({
 });
 
 
-add this code after "view_onestep_shipping_method        = new OneStep.Views.ShippingMethod();": 
+#2 Add this code after "view_onestep_shipping_method        = new OneStep.Views.ShippingMethod();": 
 
 view_onestep_deliverytime_method    = new OneStep.Views.DeliverytimeMethod();
 
-add this code after "view_onestep_shipping_method,":
+#3 Add this code after "view_onestep_shipping_method,":
 
 view_onestep_deliverytime_method,
 
