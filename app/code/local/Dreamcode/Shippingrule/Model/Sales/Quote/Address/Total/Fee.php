@@ -5,6 +5,8 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
         parent::collect($address);
+        $scopeId = Mage::app()->getStore()->getStoreId();
+
         // $this->_setAmount(0);
         // $this->_setBaseAmount(0);
         $items = $this->_getAddressItems($address);
@@ -21,12 +23,12 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
         $today = Mage::getModel('core/date')->date('m/d/Y');
 
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
-        if(Mage::getStoreConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
+        if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
             $fee += 5;
-        } else if(Mage::getStoreConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){
+        } else if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){
             $fee += 10;
         } else {
-            $configValue = unserialize(Mage::getStoreConfig('dcshippingrule/general/special_days'));
+            $configValue = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
             if(!empty($configValue)){
                 foreach($configValue as $config){
                     if($deliveryDateSelected == $config['date']){
