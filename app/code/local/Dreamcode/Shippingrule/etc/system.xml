@@ -44,7 +44,7 @@
                             <show_in_store>1</show_in_store>
                         </title>
                         <fee_same_day translate="label">
-                            <label>Apply fee for same day delivery ($5)</label>
+                            <label>Apply fee for same day delivery</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>3</sort_order>
@@ -53,6 +53,17 @@
                             <show_in_store>1</show_in_store>
                             <comment></comment>
                         </fee_same_day>
+                        <fee_for_same_day translate="label">
+                            <label>Fee for same day delivery</label>
+                            <frontend_type>text</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><fee_same_day>1</fee_same_day></depends>
+                            <comment>Enter fee with the format number, for example: 0.5 </comment>
+                        </fee_for_same_day>
                         <fee_next_day translate="label">
                             <label>Apply fee for next day delivery ($10)</label>
                             <frontend_type>select</frontend_type>
@@ -63,6 +74,17 @@
                             <show_in_store>1</show_in_store>
                             <comment></comment>
                         </fee_next_day>
+                        <fee_for_next_day translate="label">
+                            <label>Fee for next day delivery</label>
+                            <frontend_type>text</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><fee_next_day>1</fee_next_day></depends>
+                            <comment>Enter fee with the format number, for example: 0.5 </comment>
+                        </fee_for_next_day>
                         <special_days translate="label">
                             <label>Delivery date is special day:</label>
                             <frontend_model>dcshippingrule/system_config_form_field_questionoptions</frontend_model>

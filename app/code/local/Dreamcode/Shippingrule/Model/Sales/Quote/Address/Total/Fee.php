@@ -24,9 +24,9 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
 
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
-            $fee += 5;
+            $fee += Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day');
         } else if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){
-            $fee += 10;
+            $fee += Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day');
         } else {
             $configValue = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
             if(!empty($configValue)){

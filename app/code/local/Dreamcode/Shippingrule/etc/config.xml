@@ -100,7 +100,9 @@
             <allow>0</allow>
             <title>Delivery Shipping Fee</title>
             <fee_same_day>1</fee_same_day>
+            <fee_for_same_day>5</fee_for_same_day>
             <fee_next_day>1</fee_next_day>
+            <fee_for_next_day>10</fee_for_next_day>
             <special_days>a:2:{s:18:"_1509104415849_849";a:3:{s:4:"date";s:10:"12/24/2017";s:3:"fee";s:1:"5";s:4:"note";s:37:"If delivery date is Xmas day then +5$";}s:17:"_1509104417088_88";a:3:{s:4:"date";s:10:"02/14/2017";s:3:"fee";s:2:"10";s:4:"note";s:43:"If delivery date is Valentine day then +10$";}}</special_days>
         </dcshippingrule>
     </default>
