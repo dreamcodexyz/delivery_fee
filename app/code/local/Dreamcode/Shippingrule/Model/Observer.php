@@ -6,7 +6,8 @@ class Dreamcode_Shippingrule_Model_Observer
         $data = Mage::getModel('core/date')->date('m/d/Y');
         $post = $observer->getEvent()->getPost();
         if(array_key_exists('onestepcheckout_date', $post)){
-            $data = $post['onestepcheckout_date'];
+            $date = str_replace('/', '-', $post['onestepcheckout_date']);
+            $data = date('m/d/Y', strtotime($date)); 
         }
         Mage::getSingleton('core/session')->setDcDeliveryDate($data); 
         return $this;

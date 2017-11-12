@@ -21,8 +21,8 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
             $deliveryDateSelected = Mage::getModel('core/date')->date('m/d/Y');
         }
         $today = Mage::getModel('core/date')->date('m/d/Y');
-
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
+
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
             $fee = max($fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
         } 
@@ -51,7 +51,7 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
     public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
         $amt = $address->getDcfeeAmount();
-        if($amt)
+        if(isset($amt) && $amt > 0)
             $address->addTotal(array(
                 'code' => $this->getCode(),
                 'title' => Mage::getStoreConfig('dcshippingrule/general/title'),
