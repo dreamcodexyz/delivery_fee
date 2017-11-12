@@ -88,7 +88,7 @@ window.OneStep.$(".mw-osc-checkoutcontainer .mw-osc-column-2").appendTo("form#on
 window.OneStep.$(".col-main .review").appendTo("form#onestep_form");
 ```
 
-#5 add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
+#6 add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
 
 ```
 <div style="display: none;">
