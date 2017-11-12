@@ -44,6 +44,76 @@ view_onestep_deliverytime_method    = new OneStep.Views.DeliverytimeMethod();
 view_onestep_deliverytime_method,
 ```
 
+#4 find "OneStep.Views.DeliveryDate      = Backbone.View.extend({" add this code before `this.editTimepicker();`
+
+```
+window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next().datepicker().on('click', function() {
+    window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
+});
+
+window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
+    var day   = window.OneStep.$(this).text();
+    var month = window.OneStep.$(this).data('month');
+    var year  = window.OneStep.$(this).data('year');
+    var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+    window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
+    var extra_fee = 0;
+
+    if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == delivery_day_current_hover){
+        extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
+    } 
+
+    if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == delivery_day_current_hover){
+        extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
+    } 
+
+    var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
+    var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+    jQuery.each(configValue, function(i, item) {
+        if(delivery_day_current_hover_formated == configValue[i].date){
+            extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+        }
+    });
+    
+    window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
+})
+
+
+```
+
+#5 add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
+
+```
+<div style="display: none;">
+    <div id="extra_shipping_for_delivery_date" style="overflow:auto;">
+
+        <script type="text/javascript">
+            <?php
+        echo "window.onestepConfig.delivery.fee_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') ."'; ";
+        echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day') ."'; ";
+        echo "window.onestepConfig.delivery.fee_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') ."'; ";
+        echo "window.onestepConfig.delivery.next_day = '" . Date('d/m/Y', strtotime('+1 day')) ."'; ";
+        echo "window.onestepConfig.delivery.fee_for_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day') ."'; ";
+
+        $configValue = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
+        if(!empty($configValue)){
+            echo "window.onestepConfig.delivery.special_days = '" . json_encode($configValue) ."'; ";
+            echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
+        }
+            ?>
+        </script>
+
+        <h3><?php echo $this->__('Extra shipping fee for delivery date');?> </h3>
+        <p>
+            <span style="display: none;" id="dc_curent_delivery_date"><?php echo date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()); ?></span>
+            <p><?php echo $this->__('Fee: '); ?><span id="extra_shipping_fee_for_delivery_date">0</span></p>
+        </p>
+        
+    </div>
+</div>
+
+```
+
 
 # Use:
 Go to System configurations > Dreamcode Extension > Delivery Shipping Rule

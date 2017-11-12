@@ -24,16 +24,18 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
 
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
-            $fee += Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day');
-        } else if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){
-            $fee += Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day');
-        } else {
-            $configValue = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
-            if(!empty($configValue)){
-                foreach($configValue as $config){
-                    if($deliveryDateSelected == $config['date']){
-                        $fee += $config['fee'];
-                    }
+            $fee = max($fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
+        } 
+
+        if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){
+            $fee = max($fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'));
+        } 
+
+        $configValue = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
+        if(!empty($configValue)){
+            foreach($configValue as $config){
+                if($deliveryDateSelected == $config['date']){
+                    $fee = max($fee, $config['fee']);
                 }
             }
         }
