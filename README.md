@@ -81,6 +81,13 @@ window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', func
 
 ```
 
+#5 find " OneStep.Views.Init              = Backbone.View.extend({ " add this code to end of function initialize 
+
+```
+window.OneStep.$(".mw-osc-checkoutcontainer .mw-osc-column-2").appendTo("form#onestep_form");
+window.OneStep.$(".col-main .review").appendTo("form#onestep_form");
+```
+
 #5 add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
 
 ```
