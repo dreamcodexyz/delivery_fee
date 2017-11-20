@@ -185,7 +185,7 @@ replate with:
 ```
 
 
-#8 add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
+# Open and add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
 
 ```
 <style>
