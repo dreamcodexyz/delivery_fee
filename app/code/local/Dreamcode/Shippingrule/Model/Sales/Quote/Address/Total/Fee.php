@@ -15,7 +15,9 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
         }
         $quote = $address->getQuote();
         $exist_amount = $quote->getDcfeeAmount();
-        $fee = 0; //Dreamcode_Shippingrule_Model_Fee::getFee();
+        $exist_base_amount = $quote->getBaseDcfeeAmount();
+        $base_fee = 0; 
+        $fee = 0; 
         $deliveryDateSelected = Mage::getSingleton('core/session')->getDcDeliveryDate(); 
         if(!$deliveryDateSelected){
             $deliveryDateSelected = Mage::getModel('core/date')->date('m/d/Y');
@@ -24,26 +26,34 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
 
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
-            $fee = max($fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
+            $base_fee = max($base_fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
         } 
 
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){
-            $fee = max($fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'));
+            $base_fee = max($base_fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'));
         } 
 
         $configValue = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
         if(!empty($configValue)){
             foreach($configValue as $config){
                 if($deliveryDateSelected == $config['date']){
-                    $fee = max($fee, $config['fee']);
+                    $base_fee = max($base_fee, $config['fee']);
                 }
             }
         }
-        
+
+        $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
+        $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+        $fee = Mage::helper('directory')->currencyConvert($base_fee, $baseCurrencyCode, $currentCurrencyCode);
+
         $balance = $fee - $exist_amount;
+        $base_balance = $base_fee - $exist_base_amount;
         $address->setDcfeeAmount($balance);
-        $address->setBaseDcfeeAmount($balance);
+        $address->setBaseDcfeeAmount($base_balance);
+
         $quote->setDcfeeAmount($balance);
+        $quote->setBaseDcfeeAmount($base_balance);
+
         $address->setGrandTotal($address->getGrandTotal() + $address->getDcfeeAmount());
         $address->setBaseGrandTotal($address->getBaseGrandTotal() + $address->getBaseDcfeeAmount());
     }

@@ -32,7 +32,7 @@
                             <sort_order>1</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                             <comment></comment>
                         </allow>
                         <title translate="label">
@@ -41,7 +41,7 @@
                             <sort_order>2</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                         </title>
                         <fee_same_day translate="label">
                             <label>Apply fee for same day delivery</label>
@@ -50,7 +50,7 @@
                             <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                             <comment></comment>
                         </fee_same_day>
                         <fee_for_same_day translate="label">
@@ -60,7 +60,7 @@
                             <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                             <depends><fee_same_day>1</fee_same_day></depends>
                             <comment>Enter fee with the format number, for example: 0.5 </comment>
                         </fee_for_same_day>
@@ -71,7 +71,7 @@
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                             <comment></comment>
                         </fee_next_day>
                         <fee_for_next_day translate="label">
@@ -81,7 +81,7 @@
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                             <depends><fee_next_day>1</fee_next_day></depends>
                             <comment>Enter fee with the format number, for example: 0.5 </comment>
                         </fee_for_next_day>
@@ -92,7 +92,7 @@
                             <sort_order>3</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
+                            <show_in_store>0</show_in_store>
                             <comment>Enter date with the format (mm/dd/yyyy), for example: 12/24/2017. Enter fee with the format number, for example: 0.5 </comment>
                         </special_days>
                     </fields>
