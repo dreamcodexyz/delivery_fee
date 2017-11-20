@@ -170,12 +170,6 @@ replate with:
         beforeShowDay: function(date){
             return view.noWeekendsOrHolidays(date);
         },
-        // onSelect: function (date, dp) {
-        //     view.updateDatePickerCells();
-        // },
-        // onChangeMonthYear: function(month, year, dp) {
-        //     view.updateDatePickerCells();
-        // },
         beforeShow: function(elem, dp) { //This is for non-inline datepicker
             view.updateDatePickerCells();
         }
