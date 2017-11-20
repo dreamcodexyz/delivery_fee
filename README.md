@@ -51,6 +51,18 @@ window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next(
     window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
 });
 
+window.OneStep.$(document).on('click', '.ui-datepicker-next', function () {
+    if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+        window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
+    }
+});
+
+window.OneStep.$(document).on('click', '.ui-datepicker-prev', function () {
+    if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+        window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header'); 
+    }
+});
+
 window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
     var day   = window.OneStep.$(this).text();
     var month = window.OneStep.$(this).data('month');
@@ -76,7 +88,7 @@ window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', func
     });
     
     window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
-})
+});
 
 
 ```
@@ -170,6 +182,12 @@ replate with:
         beforeShowDay: function(date){
             return view.noWeekendsOrHolidays(date);
         },
+        // onSelect: function (date, dp) {
+        //     view.updateDatePickerCells();
+        // },
+        // onChangeMonthYear: function(month, year, dp) {
+        //     view.updateDatePickerCells();
+        // },
         beforeShow: function(elem, dp) { //This is for non-inline datepicker
             view.updateDatePickerCells();
         }
