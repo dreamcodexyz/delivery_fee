@@ -103,6 +103,14 @@ window.OneStep.$(".col-main .review").appendTo("form#onestep_form");
 #6 add this code before ` getAmPm: function(d){ `
 
 ```
+        dynamicCSSRules: [],
+        addCSSRule: function(rule) {
+            var view = this;
+            if ($.inArray(rule, view.dynamicCSSRules) == -1) {
+                jQuery('head').append('<style>' + rule + '</style>');
+                view.dynamicCSSRules.push(rule);
+            }
+        },
         updateDatePickerCells: function() {
             var view = this;
             /* Wait until current callstack is finished so the datepicker
