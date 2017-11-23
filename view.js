@@ -13,7 +13,7 @@ var view_onestep_init,
     view_onestep_cart,
     view_onestep_loader,
     view_onestep_shipping_method,
-	view_onestep_deliverytime_method,
+    view_onestep_deliverytime_method,
     view_onestep_shipping,
     view_onestep_user,
     view_onestep_delivery_date,
@@ -38,7 +38,7 @@ window.osc_block_loader = {
     updateshippingmethod    : 'checkout-shipping-method-load',
     updatepaymenttype       : 'co-payment-form',
     updatepaymentmethod     : 'co-payment-form',
-    updateddate     		: 'co-ddate'
+    updateddate             : 'co-ddate'
 
 };
 
@@ -64,7 +64,7 @@ window.OneStep.$(document).ready(function($){
                     currentPaymentMethod = null;
                 }
                 var temp = window.OneStep.$('#id_gift_wrap').is(':checked');
-				//var temp = window.OneStep.$( "#sl_gift_wrap option:selected" ).val();
+                //var temp = window.OneStep.$( "#sl_gift_wrap option:selected" ).val();
                 var params = {updategiftwrap: temp,updatepaymenttype: (window.OneStep.$.inArray(val, regetItemPayment) == -1 ? false : true), updatepaymentmethod: (window.OneStep.$.inArray(val, regetItemPayment) == -1 ? false : true)};
                 if(onestepConfig.ajaxPayment){
                     view_onestep_init.update(params);
@@ -97,26 +97,27 @@ window.OneStep.$(document).ready(function($){
         }
     });
 
-	OneStep.Views.DeliverytimeMethod    = Backbone.View.extend({
-		el: window.OneStep.$("#delivery_date_load"),
-		events: {
-			"change  #onestepcheckout_date"                : "hdlChangeMethod"
-			// "change  #onestepcheckout_offset"                : "hdlChangeMethod"
-		},
-		initialize: function(){
-			this.change_onestepcheckout_date    = -1;
-		},
-		hdlChangeMethod: function(ev){
-			var val = window.OneStep.$(ev.target).val();
-			if(val != this.change_onestepcheckout_date){
-				if(onestepConfig.ajaxShipping){
-					var params = {updateshippingmethod: false, updatepaymenttype: (onestepConfig.ajaxPaymentOnShipping ? true : false)}; /* false: mean dont show loading on block shipping method */
-					view_onestep_init.update(params);
-					this.change_onestepcheckout_date = val;
-				}
-			}
-		}
-	});
+    OneStep.Views.DeliverytimeMethod    = Backbone.View.extend({
+        el: window.OneStep.$("#delivery_date_load"),
+        events: {
+            "change  #onestepcheckout_date"                : "hdlChangeMethod"
+            // "change  #onestepcheckout_offset"                : "hdlChangeMethod"
+        },
+        initialize: function(){
+            this.change_onestepcheckout_date    = -1;
+        },
+        hdlChangeMethod: function(ev){
+            var val = window.OneStep.$(ev.target).val();
+            if(val != this.change_onestepcheckout_date){
+                if(onestepConfig.ajaxShipping){
+                    var params = {updateshippingmethod: false, updatepaymenttype: (onestepConfig.ajaxPaymentOnShipping ? true : false)}; /* false: mean dont show loading on block shipping method */
+                    view_onestep_init.update(params);
+                    this.change_onestepcheckout_date = val;
+                }
+            }
+        }
+    });
+
     OneStep.Views.Shipping          = Backbone.View.extend({
         el: window.OneStep.$("#co-shipping-form"),
         events: {
@@ -128,7 +129,7 @@ window.OneStep.$(document).ready(function($){
             "change #shipping\\:region_id"                  : "hdlChangeRegion",
             "blur   #shipping\\:region"                     : "hdlBlurRegion",
             "blur   #shipping\\:postcode"                   : "hdlBlurPostcode",
-            "blur   #shipping\\:city"                       : "hdlBlurCity"
+            /* "blur   #shipping\\:city"                       : "hdlBlurCity" */
         },
         initialize: function(){
             this.val_regionship_before      = window.OneStep.$('#shipping\\:region').val();
@@ -545,8 +546,8 @@ window.OneStep.$(document).ready(function($){
         },
         hdlGifWrap : function(){
             var temp = window.OneStep.$('#id_gift_wrap').is(':checked');
-			/* var temp = window.OneStep.$( "#sl_gift_wrap option:selected" ).val(); */
-			/* alert(temp); */
+            /* var temp = window.OneStep.$( "#sl_gift_wrap option:selected" ).val(); */
+            /* alert(temp); */
             var params = {updategiftwrap: temp};
             view_onestep_init.update(params);
         }
@@ -611,32 +612,32 @@ window.OneStep.$(document).ready(function($){
 
             //add fancy box to form click login, click forgot password
             window.OneStep.$("#loginbox").fancybox({
-                'titlePosition'		: 'inside',
-                'transitionIn'		: 'none',
-                'transitionOut'		: 'none',
-                'width'				:	'400',
-                'height	'			:	'250',
+                'titlePosition'     : 'inside',
+                'transitionIn'      : 'none',
+                'transitionOut'     : 'none',
+                'width'             :   '400',
+                'height '           :   '250',
                 onComplete          : function(){
                     view_onestep_user = new OneStep.Views.User({el: window.OneStep.$("#mw-login-form"), form: 'login'});
                 }
             });
             window.OneStep.$("#onestepcheckout-toc-link").fancybox({
-                'titlePosition'		: 'inside',
-                'transitionIn'		: 'none',
-                'transitionOut'		: 'none'
+                'titlePosition'     : 'inside',
+                'transitionIn'      : 'none',
+                'transitionOut'     : 'none'
             });
             window.OneStep.$("#forgotpassword").fancybox({
-                'titlePosition'		: 'inside',
-                'transitionIn'		: 'none',
-                'transitionOut'		: 'none',
+                'titlePosition'     : 'inside',
+                'transitionIn'      : 'none',
+                'transitionOut'     : 'none',
                 onComplete          : function(){
                     view_onestep_user = new OneStep.Views.User({el: window.OneStep.$("#form-validate"), form: 'forgot'});
                 }
             });
             window.OneStep.$("#backlogin").fancybox({
-                'titlePosition'		: 'inside',
-                'transitionIn'		: 'none',
-                'transitionOut'		: 'none'
+                'titlePosition'     : 'inside',
+                'transitionIn'      : 'none',
+                'transitionOut'     : 'none'
             });
 
             var initLoad = {
@@ -651,7 +652,7 @@ window.OneStep.$(document).ready(function($){
             }else if(window.OneStep.$('input[name=payment\\[method\\]]:checked').val()){
                 initLoad.pay = true;
             }
-			initLoad.ship = true;
+            initLoad.ship = true;
 
             if(initLoad.both){
                 this.update({updatepaymentmethod: true, updateshippingmethod: true});
@@ -802,8 +803,8 @@ window.OneStep.$(document).ready(function($){
         },
         /** All methods of click*/
         hdlBtnCheckout: function(ev){
-			
-            //	First validate the form
+            
+            //  First validate the form
 
             window.OneStep.$('#co-payment-form').show();
             var form    = new VarienForm('onestep_form');
@@ -934,7 +935,7 @@ window.OneStep.$(document).ready(function($){
             });
             return asyncdata;
         },
-        updateOrder: function(){			
+        updateOrder: function(){            
             var view = this;
             var urlPost = onestepConfig.url.updOrderMethod;
 
@@ -1017,7 +1018,7 @@ window.OneStep.$(document).ready(function($){
             var data = window.OneStep.$("#onestep_form").serializeArray();
             var updates = [];
             var view = this;
-			view_onestep_load_session_form.bindAll();
+            view_onestep_load_session_form.bindAll();
             params = this.filterParams(params);
             window.OneStep.$.each(params, function(k, v){
                 updates.push({name: k, value: v});
@@ -1289,15 +1290,15 @@ window.OneStep.$(document).ready(function($){
                 beforeShowDay: function(date){
                     return view.noWeekendsOrHolidays(date);
                 },
-       			// onSelect: function (date, dp) {
-			    //     view.updateDatePickerCells();
-			    // },
-			    // onChangeMonthYear: function(month, year, dp) {
-			    //     view.updateDatePickerCells();
-			    // },
-			    beforeShow: function(elem, dp) { //This is for non-inline datepicker
-			        view.updateDatePickerCells();
-			    }
+                // onSelect: function (date, dp) {
+                //     view.updateDatePickerCells();
+                // },
+                // onChangeMonthYear: function(month, year, dp) {
+                //     view.updateDatePickerCells();
+                // },
+                beforeShow: function(elem, dp) { //This is for non-inline datepicker
+                    view.updateDatePickerCells();
+                }
             };
 
             if(onestepConfig.delivery.rangeDay){
@@ -1310,29 +1311,62 @@ window.OneStep.$(document).ready(function($){
             //window.OneStep.$("#onestepcheckout_date").attr("value", this.daySelected);
             this.datePicker = window.OneStep.$('#onestepcheckout_date').datepicker(this.option);
 
-            view.updateDatePickerCells();
 
             window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next().datepicker().on('click', function() {
-			    window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
-			});
+                window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
+            });
 
-		    window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
-		        var day   = window.OneStep.$(this).text();
-		        var month = window.OneStep.$(this).data('month');
-		        var year  = window.OneStep.$(this).data('year');
-		        var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
-		        var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+            window.OneStep.$(document).on('click', '.ui-datepicker-next', function () {
+                view.updateDatePickerCells();
+                if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+                    window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
+                }
+            });
 
-		        var extra_fee = '+'+window.onestepConfig.delivery.current_currency_code + ' ' + window.OneStep.$(this).find('a').data('fee'); 
-		        //var extra_fee =  view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
+            window.OneStep.$(document).on('click', '.ui-datepicker-prev', function () {
+                view.updateDatePickerCells();
+                if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+                    window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header'); 
+                }
+            });
 
-		        window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
-		        // window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
-		    })
+            window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
+                var day   = window.OneStep.$(this).text();
+                var month = window.OneStep.$(this).data('month');
+                var year  = window.OneStep.$(this).data('year');
+
+                day = (day.length == 1? '0' + day : day );
+
+                var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+                window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
+                var extra_fee = 0;
+                var extra_note = '';
+
+                if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == delivery_day_current_hover){
+                    extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
+                } 
+
+                if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == delivery_day_current_hover){
+                    extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
+                } 
+
+                var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
+                var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+                jQuery.each(configValue, function(i, item) {
+                    if(delivery_day_current_hover_formated == configValue[i].date){
+                        extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+                        extra_note = configValue[i].note;
+                    }
+                });
+                
+                window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
+                window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
+            });
+
+
 
             this.editTimepicker();
         },
-        
         hdlTimerange: function(ev){
             var strtime = window.OneStep.$(ev.target).val();
             if(strtime)
@@ -1357,18 +1391,18 @@ window.OneStep.$(document).ready(function($){
             r.send(null);
             return new Date(r.getResponseHeader("DATE"));
         },
-        notWeekends: function(date){		//true if not weekend
+        notWeekends: function(date){        //true if not weekend
             var view = this;
             if(view.weekendDays.length > 0){
                 var isWeekend = date.getDay();
                 for (i = 0; i < view.weekendDays.length; i++) {
                     if(window.OneStep.$.inArray(isWeekend+"", view.weekendDays) !=-1){
-                        return false;	//false if is weekend
+                        return false;   //false if is weekend
                     }
                 }
             }
 
-            return true;	//true if not weekend
+            return true;    //true if not weekend
         },
         nationalDays: function(date){
             var view = this;
@@ -1403,65 +1437,72 @@ window.OneStep.$(document).ready(function($){
             var notWeekend = this.notWeekends(date);
             return notWeekend ? this.nationalDays(date) : this.additionalDays(date);
         },
-		dynamicCSSRules: [],
-		addCSSRule: function(rule) {
-			var view = this;
-		    if ($.inArray(rule, view.dynamicCSSRules) == -1) {
-		        jQuery('head').append('<style>' + rule + '</style>');
-		        view.dynamicCSSRules.push(rule);
-		    }
-		},
+        dynamicCSSRules: [],
+        addCSSRule: function(rule) {
+            var view = this;
+            if ($.inArray(rule, view.dynamicCSSRules) == -1) {
+                jQuery('head').append('<style>' + rule + '</style>');
+                view.dynamicCSSRules.push(rule);
+            }
+        },
         updateDatePickerCells: function() {
-        	var view = this;
-		    /* Wait until current callstack is finished so the datepicker
-		       is fully rendered before attempting to modify contents */
-		    setTimeout(function () {
-		        //Fill this with the data you want to insert (I use and AJAX request).  Key is day of month
-		        //NOTE* watch out for CSS special characters in the value
+            var view = this;
+            /* Wait until current callstack is finished so the datepicker
+               is fully rendered before attempting to modify contents */
+            setTimeout(function () {
+                //Fill this with the data you want to insert (I use and AJAX request).  Key is day of month
+                //NOTE* watch out for CSS special characters in the value
 
-		        //Select disabled days (span) for proper indexing but // apply the rule only to enabled days(a)
-		        jQuery('.ui-datepicker td > *').each(function (idx, elem) {
+                //Select disabled days (span) for proper indexing but // apply the rule only to enabled days(a)
+                jQuery('.ui-datepicker td > *').each(function (idx, elem) {
 
-		        	var day   = window.OneStep.$(this).text();
-		        	var month = window.OneStep.$(this).parent().data('month');
-		        	var year  = window.OneStep.$(this).parent().data('year');
-		        	var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
-		        	var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
-		        	var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
-		        	var extra_fee = view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
+                    var day   = window.OneStep.$(this).text();
+                    var month = window.OneStep.$(this).parent().data('month');
+                    var year  = window.OneStep.$(this).parent().data('year');
+
+                    day = (day.length == 1? '0' + day : day );
+
+                    var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+                    var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
+                    var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+                    var extra_fee = view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
                     
-		            // dynamically create a css rule to add the contents //with the :after                         
-					// selector so we don't break the datepicker //functionality 
-		            var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
+                    // dynamically create a css rule to add the contents //with the :after                         
+                    // selector so we don't break the datepicker //functionality 
+                    var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
                     
-                    var extra_fee_text = '+'+window.onestepConfig.delivery.current_currency_code + ' ' + extra_fee;
+                    var extra_fee_text = '+' + extra_fee + ' ' + window.onestepConfig.delivery.current_currency_code;
+                    if(extra_fee > 0){
+                        view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
+                        view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');    
+                    }else{
+                        view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: " ";}');
+                        view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: " ";}');  
+                    }
+                    // }    
+                    jQuery(this).addClass(className);
+                    jQuery(this).attr('data-fee',extra_fee);
+                });
+            }, 0);
+        },
+        getExtraFeeByDate: function(current_date, current_date_formated){
+            var extra_fee = 0;
+            if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == current_date){
+                extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
+            } 
 
-	                view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
-	                view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');
-					// }	
-		            jQuery(this).addClass(className);
-		            jQuery(this).attr('data-fee',extra_fee);
-		        });
-		    }, 0);
-		},
-		getExtraFeeByDate: function(current_date, current_date_formated){
-			var extra_fee = 0;
-			if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == current_date){
-	            extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
-	        } 
+            if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == current_date){
+                extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
+            } 
 
-	        if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == current_date){
-	            extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
-	        } 
-
-        	var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
-        	jQuery.each(configValue, function(i, item) {
-			    if(current_date_formated == configValue[i].date){
+            var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
+            jQuery.each(configValue, function(i, item) {
+                if(current_date_formated == configValue[i].date){
                     extra_fee = Math.max(extra_fee, configValue[i].fee) ;
                 }
-			}); 
-			return extra_fee;
-		},
+            }); 
+            return extra_fee;
+        },
         getAmPm: function(d){
             if ( d.getHours() > 11 ) {
                 return "PM"
@@ -1736,9 +1777,9 @@ window.OneStep.$(document).ready(function($){
                     if(msg == 1){
                         view.$el.find('#inline3').html("<div class='mw-osc-title-login'><h1>"+Translator.translate("Password is sent successfully!")+"</h1></div><div class='fieldset'>"+Translator.translate("We have now sent you a new password to your email address. Click the link below to return to login.")+"</div><p class='back-link'><a id='backlogin1' href='#inline1' style='color:#1E7EC8;'><small>&laquo; </small>"+Translator.translate("Back to Login")+"</a></p>");
                         window.OneStep.$("#backlogin1").fancybox({
-                            'titlePosition'		: 'inside',
-                            'transitionIn'		: 'none',
-                            'transitionOut'		: 'none'
+                            'titlePosition'     : 'inside',
+                            'transitionIn'      : 'none',
+                            'transitionOut'     : 'none'
                         });
                     }
                     else{
@@ -1990,7 +2031,7 @@ window.OneStep.$(document).ready(function($){
     view_onestep_init                   = new OneStep.Views.Init();
     view_onestep_shipping               = new OneStep.Views.Shipping();
     view_onestep_shipping_method        = new OneStep.Views.ShippingMethod();
-	view_onestep_deliverytime_method    = new OneStep.Views.DeliverytimeMethod();
+    view_onestep_deliverytime_method    = new OneStep.Views.DeliverytimeMethod();
     view_onestep_payment                = new OneStep.Views.Payment();
     view_onestep_gift                   = new OneStep.Views.Gift();
     view_onestep_cart                   = new OneStep.Views.Cart();

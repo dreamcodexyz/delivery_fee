@@ -67,6 +67,9 @@ window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', func
     var day   = window.OneStep.$(this).text();
     var month = window.OneStep.$(this).data('month');
     var year  = window.OneStep.$(this).data('year');
+
+    day = (day.length == 1? '0' + day : day );
+
     var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
     window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
     var extra_fee = 0;
@@ -88,6 +91,7 @@ window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', func
     });
     
     window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
+    window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
 });
 
 
@@ -125,6 +129,9 @@ window.OneStep.$(".col-main .review").appendTo("form#onestep_form");
                     var day   = window.OneStep.$(this).text();
                     var month = window.OneStep.$(this).parent().data('month');
                     var year  = window.OneStep.$(this).parent().data('year');
+
+                    day = (day.length == 1? '0' + day : day );
+
                     var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
                     var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
                     var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
@@ -134,7 +141,7 @@ window.OneStep.$(".col-main .review").appendTo("form#onestep_form");
                     // selector so we don't break the datepicker //functionality 
                     var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
                     
-                    var extra_fee_text = '+'+window.onestepConfig.delivery.current_currency_code + ' ' + extra_fee;
+                    var extra_fee_text = '+' + extra_fee + ' ' + window.onestepConfig.delivery.current_currency_code;
 
                     view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
                     view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');

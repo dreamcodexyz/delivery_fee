@@ -1,97 +1,56 @@
 
 <style>
-	.visible-mobile{display:block;}
-	.col-md-3 {
-		float: left;
-	/*	width: 21%;*/
-		margin-top: 40px;
-	}
-	.col-md-4 {
-		float: left;
-		width: 24%;
-	}
-	.col-md-5 {
-/*		float: left; */
-		width: 33.33%;
-	}
-	@media (max-width:768px){
-		.col-md-3,.col-md-4, .col-md-5 {
-			width: 100% !important;
-			text-align:right;
-			margin-top:-20px;
-		}
-	}
-	@media screen and (min-width:980px){
-		.visible-mobile{
-			display:none;
-		}
-	}
-
-
-    div.ui-datepicker{
-        font-size:16px;
+    .visible-mobile{display:block;}
+    .col-md-3 {
+        float: left;
+    /*  width: 21%;*/
+        margin-top: 40px;
     }
-    .ui-datepicker td span,
-    .ui-datepicker td a{
-        font-size: 12px;
+    .col-md-4 {
+        float: left;
+        width: 24%;
     }
-
-    .ui-datepicker td span:after,
-    .ui-datepicker td a:after
-    {
-        content: "";
-        display: block;
-        font-size: 10px;
-        width: 30px;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-        text-align: right;
-        color: green;
-        direction: ltr;
-        min-height: 13px;
+    .col-md-5 {
+/*      float: left; */
+        width: 33.33%;
     }
-    .ui-datepicker td{
-        position: relative;
+    @media (max-width:768px){
+        .col-md-3,.col-md-4, .col-md-5 {
+            width: 100% !important;
+            text-align:right;
+            margin-top:-20px;
+        }
     }
-
-    .ui-state-default, .ui-widget-content .ui-state-default{
-        border: none;
+    @media screen and (min-width:980px){
+        .visible-mobile{
+            display:none;
+        }
     }
-
-    .ui-datepicker td{
-        background: #5ba8e9;
-        border: 1px solid #cccccc;
-    }
-    .ui-datepicker-other-month, .ui-widget-content .ui-datepicker-other-month{
-        background: transparent;
-    }
-
 </style>
 <div class="container">
-	<?php 
-	$banner1 = Mage::getStoreConfig('onestepcheckout/config/page_banner1');
-	$banner2 = Mage::getStoreConfig('onestepcheckout/config/page_banner2');
-	$banner3 = Mage::getStoreConfig('onestepcheckout/config/page_banner3'); 
-	?>
-	<?php if($banner1):?>
-	<div class="col-md-3 cart-3-banners">
-		<img src="<?php echo $banner1 ?>"/>
-	</div>
-	<?php endif; ?>
-	<?php if($banner2):?>
-	<div class="col-md-3 cart-3-banners">
-		<img src="<?php echo $banner2 ?>"/>
-	</div>
-	<?php endif; ?>
-	<?php if($banner3):?>
-	<div class="col-md-3 cart-3-banners">
-		<img src="<?php echo $banner3 ?>"/>
-	</div>
-	<?php endif; ?>
-	<div  class="col-md-5">
+    <?php 
+    $banner1 = Mage::getStoreConfig('onestepcheckout/config/page_banner1');
+    $banner2 = Mage::getStoreConfig('onestepcheckout/config/page_banner2');
+    $banner3 = Mage::getStoreConfig('onestepcheckout/config/page_banner3'); 
+    ?>
+    <?php if($banner1):?>
+    <div class="col-md-3 cart-3-banners">
+        <img src="<?php echo $banner1 ?>"/>
+    </div>
+    <?php endif; ?>
+    <?php if($banner2):?>
+    <div class="col-md-3 cart-3-banners">
+        <img src="<?php echo $banner2 ?>"/>
+    </div>
+    <?php endif; ?>
+    <?php if($banner3):?>
+    <div class="col-md-3 cart-3-banners">
+        <img src="<?php echo $banner3 ?>"/>
+    </div>
+    <?php endif; ?>
+    <div  class="col-md-5">
 <?php $islogin = (Mage::getSingleton('customer/session')->isLoggedIn()) ? 1 : 0; ?>
-	<hidden value="Welcome to One Step Checkout Pro"></hidden>
+    <hidden value="Welcome to One Step Checkout Pro"></hidden>
     <hidden value="Please enter your details below to complete your purchase."></hidden>
     <?php $temp_session = Mage::helper('onestepcheckout')->checkSession(); ?>
     <input type="hidden" value="<?php echo $temp_session ?>" id="check_session"/>
@@ -110,13 +69,13 @@
         <a id="loginbox" href="#inline1" title=""><?php echo $this->__('Already registered? Click here to login.');?></a>
         <?php endif?>
     <?php endif?>
-	</div>
+    </div>
 </div>
     <div class="mw-osc-threecolumns mw-osc-checkoutcontainer mw-osc-skin-generic">
         <form data-key="<?php echo Mage::getSingleton('core/session')->getFormKey();?>" id="onestep_form" action="<?php echo $this->getUrl('onestepcheckout/index/updateordermethod')?>" method="POST">
-			<?php /*?><div class="clearfix">
-            	<div class="mw-osc-column-2">
-					<?php 
+            <?php /*?><div class="clearfix">
+                <div class="mw-osc-column-2">
+                    <?php 
                     $banner1 = Mage::getStoreConfig('onestepcheckout/config/page_banner1');
                     $banner2 = Mage::getStoreConfig('onestepcheckout/config/page_banner2');
                     $banner3 = Mage::getStoreConfig('onestepcheckout/config/page_banner3');
@@ -230,7 +189,7 @@
                 </div>
             </div>
             <!-- end.review -->
-            <div class="clear_both">&nbsp;</div>
+            <div class="clear_both"></div>
         </form>
 
         <?php if(version_compare(Mage::getVersion(),'1.4.0.1','>='))://fix cho magento >= 1.4?>
@@ -275,46 +234,92 @@
                 </div>
         <?php endif;?>
         </div>
-
-
     <div class="clear_both">&nbsp;</div>
     <div style="left: 0px; min-height: 710px; display: none; top:0px;" id="loading-mask">
         <p id="loading_mask_loader" class="loader"><img alt="Loading..." src="<?php echo $this->getSkinUrl('mw_onestepcheckout/images/ajax-loader-tr.gif')?>"></p>
     </div>
 
+    <style>
+        div.ui-datepicker{
+            font-size:16px;
+            width: 20em;
+        }
+        .ui-datepicker td span,
+        .ui-datepicker td a{
+            font-size: 12px;
+        }
+
+        .ui-datepicker td span:after,
+        .ui-datepicker td a:after
+        {
+            content: "";
+            display: block;
+            font-size: 10px;
+            width: 38px;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            color: green;
+            direction: ltr;
+            min-height: 20px;
+        }
+        .ui-datepicker td{
+            position: relative;
+        }
+
+        .ui-state-default, .ui-widget-content .ui-state-default{
+            border: none;
+        }
+
+        .ui-datepicker td{
+            background: #5ba8e9;
+            border: 1px solid #cccccc;
+        }
+        .ui-datepicker-other-month, .ui-widget-content .ui-datepicker-other-month{
+            background: transparent;
+        }
+
+        .ui-datepicker table{
+            font-size: 0.9em;
+        }
+
+    </style>
+
     <div style="display: none;">
         <div id="extra_shipping_for_delivery_date" style="overflow:auto;">
 
-            <script type="text/javascript">
-                <?php
+                <script type="text/javascript">
+                    <?php
 
-            $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-            $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+                $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
+                $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
 
-            echo "window.onestepConfig.delivery.fee_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') ."'; ";
-            echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
-            
-            echo "window.onestepConfig.delivery.fee_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') ."'; ";
-            echo "window.onestepConfig.delivery.next_day = '" . Date('d/m/Y', strtotime('+1 day')) ."'; ";
-            echo "window.onestepConfig.delivery.fee_for_next_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
-            
-            echo "window.onestepConfig.delivery.current_currency_code = '" . Mage::app()->getLocale()->currency( $currentCurrencyCode )->getSymbol() ."'; ";
+                echo "window.onestepConfig.delivery.fee_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') ."'; ";
+                echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
+                
+                echo "window.onestepConfig.delivery.fee_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') ."'; ";
+                echo "window.onestepConfig.delivery.next_day = '" . Date('d/m/Y', strtotime('+1 day')) ."'; ";
+                echo "window.onestepConfig.delivery.fee_for_next_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
+                
+                echo "window.onestepConfig.delivery.current_currency_code = '" . Mage::app()->getLocale()->currency( $currentCurrencyCode )->getSymbol() ."'; ";
 
-            $special_days_data = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
-            if(!empty($special_days_data)){
-                foreach ( $special_days_data as $key => $value) {
-                    $special_days_data[$key]['fee'] = Mage::helper('directory')->currencyConvert($value['fee'], $baseCurrencyCode, $currentCurrencyCode);
+                $special_days_data = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
+                if(!empty($special_days_data)){
+                    foreach ( $special_days_data as $key => $value) {
+                        $special_days_data[$key]['fee'] = Mage::helper('directory')->currencyConvert($value['fee'], $baseCurrencyCode, $currentCurrencyCode);
+                    }
+                    echo "window.onestepConfig.delivery.special_days = '" . json_encode($special_days_data) ."'; ";
+                    echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
                 }
-                echo "window.onestepConfig.delivery.special_days = '" . json_encode($special_days_data) ."'; ";
-                echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
-            }
-                ?>
-            </script>
+                    ?>
+                </script>
 
             <h3><?php echo $this->__('Extra shipping fee for delivery date');?> </h3>
             <p>
                 <span style="display: none;" id="dc_curent_delivery_date"><?php echo date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()); ?></span>
                 <p><?php echo $this->__('Fee: '); ?><span id="extra_shipping_fee_for_delivery_date">0</span></p>
+                <p><?php echo $this->__('Note: '); ?><span id="extra_shipping_note_for_delivery_date"></span></p>
             </p>
             
         </div>

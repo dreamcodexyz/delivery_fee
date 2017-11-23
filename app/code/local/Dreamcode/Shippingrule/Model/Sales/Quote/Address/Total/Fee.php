@@ -20,7 +20,8 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
         $fee = 0; 
         $deliveryDateSelected = Mage::getSingleton('core/session')->getDcDeliveryDate(); 
         if(!$deliveryDateSelected){
-            $deliveryDateSelected = Mage::getModel('core/date')->date('m/d/Y');
+            $deliveryDateSelected = '01/01/1970';
+            // $deliveryDateSelected = Mage::getModel('core/date')->date('m/d/Y');
         }
         $today = Mage::getModel('core/date')->date('m/d/Y');
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
