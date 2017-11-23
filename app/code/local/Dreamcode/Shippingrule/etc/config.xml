@@ -6,6 +6,13 @@
         </Dreamcode_Shippingrule>
     </modules>
     <frontend>
+        <layout>
+            <updates>
+                <dcshippingrule>
+                    <file>deliveryfee.xml</file>
+                </dcshippingrule>
+            </updates>
+        </layout>
         <translate>
             <modules>
                 <Dreamcode_Shippingrule>
@@ -17,6 +24,13 @@
         </translate>
     </frontend>
     <adminhtml>
+        <layout>
+            <updates>
+                <dcshippingrule>
+                    <file>deliveryfee.xml</file>
+                </dcshippingrule>
+            </updates>
+        </layout>
         <translate>
             <modules>
                 <Dreamcode_Shippingrule>
@@ -34,6 +48,12 @@
                 <base_dcfee_amount><to_order>*</to_order></base_dcfee_amount>
             </sales_convert_quote_address>
         </fieldsets>
+
+        <blocks>
+            <dcshippingrule>
+                <class>Dreamcode_Shippingrule_Block</class>
+            </dcshippingrule>
+        </blocks>
 
         <helpers>
             <dcshippingrule>

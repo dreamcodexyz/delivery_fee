@@ -230,6 +230,7 @@ div.ui-datepicker{
         text-align: right;
         color: green;
         direction: ltr;
+        min-height: 13px;
     }
     .ui-datepicker td{
         position: relative;
