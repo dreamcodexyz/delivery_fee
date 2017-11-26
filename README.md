@@ -23,12 +23,14 @@ OneStep.Views.DeliverytimeMethod    = Backbone.View.extend({
         this.change_onestepcheckout_date    = -1;
     },
     hdlChangeMethod: function(ev){
-        var val = window.OneStep.$(ev.target).val();
-        if(val != this.change_onestepcheckout_date){
-            if(onestepConfig.ajaxShipping){
-                var params = {updateshippingmethod: false, updatepaymenttype: (onestepConfig.ajaxPaymentOnShipping ? true : false)}; /* false: mean dont show loading on block shipping method */
-                view_onestep_init.update(params);
-                this.change_onestepcheckout_date = val;
+        if(window.onestepConfig.delivery.enable_module_shipping_fee == 1) {
+            var val = window.OneStep.$(ev.target).val();
+            if(val != this.change_onestepcheckout_date){
+                if(onestepConfig.ajaxShipping){
+                    var params = {updateshippingmethod: false, updatepaymenttype: (onestepConfig.ajaxPaymentOnShipping ? true : false)}; /* false: mean dont show loading on block shipping method */
+                    view_onestep_init.update(params);
+                    this.change_onestepcheckout_date = val;
+                }
             }
         }
     }
@@ -47,52 +49,59 @@ view_onestep_deliverytime_method,
 #4 find "OneStep.Views.DeliveryDate      = Backbone.View.extend({" add this code before `this.editTimepicker();`
 
 ```
-window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next().datepicker().on('click', function() {
-    window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
-});
+if(window.onestepConfig.delivery.enable_module_shipping_fee == 1) {
 
-window.OneStep.$(document).on('click', '.ui-datepicker-next', function () {
-    if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+    window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next().datepicker().on('click', function() {
         window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
-    }
-});
+    });
 
-window.OneStep.$(document).on('click', '.ui-datepicker-prev', function () {
-    if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
-        window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header'); 
-    }
-});
-
-window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
-    var day   = window.OneStep.$(this).text();
-    var month = window.OneStep.$(this).data('month');
-    var year  = window.OneStep.$(this).data('year');
-
-    day = (day.length == 1? '0' + day : day );
-
-    var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
-    window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
-    var extra_fee = 0;
-
-    if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == delivery_day_current_hover){
-        extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
-    } 
-
-    if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == delivery_day_current_hover){
-        extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
-    } 
-
-    var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
-    var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
-    jQuery.each(configValue, function(i, item) {
-        if(delivery_day_current_hover_formated == configValue[i].date){
-            extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+    window.OneStep.$(document).on('click', '.ui-datepicker-next', function () {
+        view.updateDatePickerCells();
+        if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+            window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
         }
     });
-    
-    window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
-    window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
-});
+
+    window.OneStep.$(document).on('click', '.ui-datepicker-prev', function () {
+        view.updateDatePickerCells();
+        if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+            window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header'); 
+        }
+    });
+
+    window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
+        var day   = window.OneStep.$(this).text();
+        var month = window.OneStep.$(this).data('month');
+        var year  = window.OneStep.$(this).data('year');
+
+        day = (day.length == 1? '0' + day : day );
+
+        var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+        window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
+        var extra_fee = 0;
+        var extra_note = '';
+
+        if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == delivery_day_current_hover){
+            extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
+        } 
+
+        if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == delivery_day_current_hover){
+            extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
+        } 
+
+        var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
+        var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+        jQuery.each(configValue, function(i, item) {
+            if(delivery_day_current_hover_formated == configValue[i].date){
+                extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+                extra_note = configValue[i].note;
+            }
+        });
+        
+        window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
+        window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
+    });
+}
 
 
 ```
@@ -116,40 +125,46 @@ window.OneStep.$(".col-main .review").appendTo("form#onestep_form");
             }
         },
         updateDatePickerCells: function() {
-            var view = this;
-            /* Wait until current callstack is finished so the datepicker
-               is fully rendered before attempting to modify contents */
-            setTimeout(function () {
-                //Fill this with the data you want to insert (I use and AJAX request).  Key is day of month
-                //NOTE* watch out for CSS special characters in the value
+            if(window.onestepConfig.delivery.enable_module_shipping_fee == 1) {
+                var view = this;
+                /* Wait until current callstack is finished so the datepicker
+                   is fully rendered before attempting to modify contents */
+                setTimeout(function () {
+                    //Fill this with the data you want to insert (I use and AJAX request).  Key is day of month
+                    //NOTE* watch out for CSS special characters in the value
 
-                //Select disabled days (span) for proper indexing but // apply the rule only to enabled days(a)
-                jQuery('.ui-datepicker td > *').each(function (idx, elem) {
+                    //Select disabled days (span) for proper indexing but // apply the rule only to enabled days(a)
+                    jQuery('.ui-datepicker td > *').each(function (idx, elem) {
 
-                    var day   = window.OneStep.$(this).text();
-                    var month = window.OneStep.$(this).parent().data('month');
-                    var year  = window.OneStep.$(this).parent().data('year');
+                        var day   = window.OneStep.$(this).text();
+                        var month = window.OneStep.$(this).parent().data('month');
+                        var year  = window.OneStep.$(this).parent().data('year');
 
-                    day = (day.length == 1? '0' + day : day );
+                        day = (day.length == 1? '0' + day : day );
 
-                    var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
-                    var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
-                    var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
-                    var extra_fee = view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
-                    
-                    // dynamically create a css rule to add the contents //with the :after                         
-                    // selector so we don't break the datepicker //functionality 
-                    var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
-                    
-                    var extra_fee_text = '+' + extra_fee + ' ' + window.onestepConfig.delivery.current_currency_code;
-
-                    view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
-                    view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');
-                    // }    
-                    jQuery(this).addClass(className);
-                    jQuery(this).attr('data-fee',extra_fee);
-                });
-            }, 0);
+                        var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+                        var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
+                        var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+                        var extra_fee = view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
+                        
+                        // dynamically create a css rule to add the contents //with the :after                         
+                        // selector so we don't break the datepicker //functionality 
+                        var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
+                        
+                        var extra_fee_text = '+' + extra_fee + ' ' + window.onestepConfig.delivery.current_currency_code;
+                        if(extra_fee > 0){
+                            view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
+                            view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');    
+                        }else{
+                            view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: " ";}');
+                            view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: " ";}');  
+                        }
+                        // }    
+                        jQuery(this).addClass(className);
+                        jQuery(this).attr('data-fee',extra_fee);
+                    });
+                }, 0);
+            }
         },
         getExtraFeeByDate: function(current_date, current_date_formated){
             var extra_fee = 0;
@@ -257,43 +272,66 @@ div.ui-datepicker{
 
 </style>
 
-<div style="display: none;">
-    <div id="extra_shipping_for_delivery_date" style="overflow:auto;">
+<?php
 
-            <script type="text/javascript">
-                <?php
+    if(Mage::helper('core')->isModuleEnabled('Dreamcode_Shippingrule') && Mage::helper('core')->isModuleOutputEnabled('Dreamcode_Shippingrule'))
+    {
+        if(Mage::getStoreConfig('dcshippingrule/general/allow') == 1) {
+            $enable_module_shipping_fee = Mage::getStoreConfig('dcshippingrule/general/allow');
+     ?>
+    <div style="display: none;">
+        <div id="extra_shipping_for_delivery_date" style="overflow:auto;">
 
-            $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
-            $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
+                <script type="text/javascript">
+                    <?php
 
-            echo "window.onestepConfig.delivery.fee_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') ."'; ";
-            echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
-            
-            echo "window.onestepConfig.delivery.fee_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') ."'; ";
-            echo "window.onestepConfig.delivery.next_day = '" . Date('d/m/Y', strtotime('+1 day')) ."'; ";
-            echo "window.onestepConfig.delivery.fee_for_next_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
-            
-            echo "window.onestepConfig.delivery.current_currency_code = '" . Mage::app()->getLocale()->currency( $currentCurrencyCode )->getSymbol() ."'; ";
+                $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
+                $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
 
-            $special_days_data = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
-            if(!empty($special_days_data)){
-                foreach ( $special_days_data as $key => $value) {
-                    $special_days_data[$key]['fee'] = Mage::helper('directory')->currencyConvert($value['fee'], $baseCurrencyCode, $currentCurrencyCode);
+                echo "window.onestepConfig.delivery.fee_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') ."'; ";
+                echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
+                
+                echo "window.onestepConfig.delivery.fee_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') ."'; ";
+                echo "window.onestepConfig.delivery.next_day = '" . Date('d/m/Y', strtotime('+1 day')) ."'; ";
+                echo "window.onestepConfig.delivery.fee_for_next_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_next_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
+                
+                echo "window.onestepConfig.delivery.current_currency_code = '" . Mage::app()->getLocale()->currency( $currentCurrencyCode )->getSymbol() ."'; ";
+
+                $special_days_data = unserialize(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/special_days'));
+                if(!empty($special_days_data)){
+                    foreach ( $special_days_data as $key => $value) {
+                        $special_days_data[$key]['fee'] = Mage::helper('directory')->currencyConvert($value['fee'], $baseCurrencyCode, $currentCurrencyCode);
+                    }
+                    echo "window.onestepConfig.delivery.special_days = '" . json_encode($special_days_data) ."'; ";
+                    echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
                 }
-                echo "window.onestepConfig.delivery.special_days = '" . json_encode($special_days_data) ."'; ";
-                echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
-            }
-                ?>
-            </script>
+                    ?>
+                </script>
 
-        <h3><?php echo $this->__('Extra shipping fee for delivery date');?> </h3>
-        <p>
-            <span style="display: none;" id="dc_curent_delivery_date"><?php echo date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()); ?></span>
-            <p><?php echo $this->__('Fee: '); ?><span id="extra_shipping_fee_for_delivery_date">0</span></p>
-        </p>
-        
+            <h3><?php echo $this->__('Extra shipping fee for delivery date');?> </h3>
+            <p>
+                <span style="display: none;" id="dc_curent_delivery_date"><?php echo date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()); ?></span>
+                <p><?php echo $this->__('Fee: '); ?><span id="extra_shipping_fee_for_delivery_date">0</span></p>
+                <p><?php echo $this->__('Note: '); ?><span id="extra_shipping_note_for_delivery_date"></span></p>
+            </p>
+            
+        </div>
     </div>
-</div>
+
+    <?php 
+        }else{
+            $enable_module_shipping_fee = 0;
+        }
+    }else{
+        $enable_module_shipping_fee = 0;
+    }
+    ?>
+
+    <script type="text/javascript">
+    <?php
+        echo "window.onestepConfig.delivery.enable_module_shipping_fee = '" . $enable_module_shipping_fee  ."'; ";
+    ?>
+    </script>
 
 ```
 

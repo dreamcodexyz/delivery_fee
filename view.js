@@ -107,12 +107,14 @@ window.OneStep.$(document).ready(function($){
             this.change_onestepcheckout_date    = -1;
         },
         hdlChangeMethod: function(ev){
-            var val = window.OneStep.$(ev.target).val();
-            if(val != this.change_onestepcheckout_date){
-                if(onestepConfig.ajaxShipping){
-                    var params = {updateshippingmethod: false, updatepaymenttype: (onestepConfig.ajaxPaymentOnShipping ? true : false)}; /* false: mean dont show loading on block shipping method */
-                    view_onestep_init.update(params);
-                    this.change_onestepcheckout_date = val;
+            if(window.onestepConfig.delivery.enable_module_shipping_fee == 1) {
+                var val = window.OneStep.$(ev.target).val();
+                if(val != this.change_onestepcheckout_date){
+                    if(onestepConfig.ajaxShipping){
+                        var params = {updateshippingmethod: false, updatepaymenttype: (onestepConfig.ajaxPaymentOnShipping ? true : false)}; /* false: mean dont show loading on block shipping method */
+                        view_onestep_init.update(params);
+                        this.change_onestepcheckout_date = val;
+                    }
                 }
             }
         }
@@ -1311,57 +1313,59 @@ window.OneStep.$(document).ready(function($){
             //window.OneStep.$("#onestepcheckout_date").attr("value", this.daySelected);
             this.datePicker = window.OneStep.$('#onestepcheckout_date').datepicker(this.option);
 
+            if(window.onestepConfig.delivery.enable_module_shipping_fee == 1) {
 
-            window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next().datepicker().on('click', function() {
-                window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
-            });
-
-            window.OneStep.$(document).on('click', '.ui-datepicker-next', function () {
-                view.updateDatePickerCells();
-                if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+                window.OneStep.$(document).find(window.OneStep.$('#onestepcheckout_date')).next().datepicker().on('click', function() {
                     window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
-                }
-            });
+                });
 
-            window.OneStep.$(document).on('click', '.ui-datepicker-prev', function () {
-                view.updateDatePickerCells();
-                if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
-                    window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header'); 
-                }
-            });
-
-            window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
-                var day   = window.OneStep.$(this).text();
-                var month = window.OneStep.$(this).data('month');
-                var year  = window.OneStep.$(this).data('year');
-
-                day = (day.length == 1? '0' + day : day );
-
-                var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
-                window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
-                var extra_fee = 0;
-                var extra_note = '';
-
-                if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == delivery_day_current_hover){
-                    extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
-                } 
-
-                if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == delivery_day_current_hover){
-                    extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
-                } 
-
-                var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
-                var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
-                jQuery.each(configValue, function(i, item) {
-                    if(delivery_day_current_hover_formated == configValue[i].date){
-                        extra_fee = Math.max(extra_fee, configValue[i].fee) ;
-                        extra_note = configValue[i].note;
+                window.OneStep.$(document).on('click', '.ui-datepicker-next', function () {
+                    view.updateDatePickerCells();
+                    if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+                        window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header');
                     }
                 });
-                
-                window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
-                window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
-            });
+
+                window.OneStep.$(document).on('click', '.ui-datepicker-prev', function () {
+                    view.updateDatePickerCells();
+                    if(!window.OneStep.$(this).hasClass('ui-state-disabled')){
+                        window.OneStep.$('#extra_shipping_for_delivery_date').clone().insertBefore('.ui-datepicker-header'); 
+                    }
+                });
+
+                window.OneStep.$(document).on('mouseenter', 'td[data-handler="selectDay"]', function() {
+                    var day   = window.OneStep.$(this).text();
+                    var month = window.OneStep.$(this).data('month');
+                    var year  = window.OneStep.$(this).data('year');
+
+                    day = (day.length == 1? '0' + day : day );
+
+                    var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+                    window.OneStep.$(".ui-datepicker #dc_curent_delivery_date").text( delivery_day_current_hover );
+                    var extra_fee = 0;
+                    var extra_note = '';
+
+                    if(window.onestepConfig.delivery.fee_same_day == 1 && window.onestepConfig.delivery.current_day == delivery_day_current_hover){
+                        extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_same_day) ; 
+                    } 
+
+                    if(window.onestepConfig.delivery.fee_next_day == 1 && window.onestepConfig.delivery.next_day == delivery_day_current_hover){
+                        extra_fee = Math.max(extra_fee, window.onestepConfig.delivery.fee_for_next_day) ;
+                    } 
+
+                    var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
+                    var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+                    jQuery.each(configValue, function(i, item) {
+                        if(delivery_day_current_hover_formated == configValue[i].date){
+                            extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+                            extra_note = configValue[i].note;
+                        }
+                    });
+                    
+                    window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
+                    window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
+                });
+            }
 
 
 
@@ -1446,44 +1450,48 @@ window.OneStep.$(document).ready(function($){
             }
         },
         updateDatePickerCells: function() {
-            var view = this;
-            /* Wait until current callstack is finished so the datepicker
-               is fully rendered before attempting to modify contents */
-            setTimeout(function () {
-                //Fill this with the data you want to insert (I use and AJAX request).  Key is day of month
-                //NOTE* watch out for CSS special characters in the value
 
-                //Select disabled days (span) for proper indexing but // apply the rule only to enabled days(a)
-                jQuery('.ui-datepicker td > *').each(function (idx, elem) {
+            if(window.onestepConfig.delivery.enable_module_shipping_fee == 1) {
+                var view = this;
+                /* Wait until current callstack is finished so the datepicker
+                   is fully rendered before attempting to modify contents */
+                setTimeout(function () {
+                    //Fill this with the data you want to insert (I use and AJAX request).  Key is day of month
+                    //NOTE* watch out for CSS special characters in the value
 
-                    var day   = window.OneStep.$(this).text();
-                    var month = window.OneStep.$(this).parent().data('month');
-                    var year  = window.OneStep.$(this).parent().data('year');
+                    //Select disabled days (span) for proper indexing but // apply the rule only to enabled days(a)
+                    jQuery('.ui-datepicker td > *').each(function (idx, elem) {
 
-                    day = (day.length == 1? '0' + day : day );
+                        var day   = window.OneStep.$(this).text();
+                        var month = window.OneStep.$(this).parent().data('month');
+                        var year  = window.OneStep.$(this).parent().data('year');
 
-                    var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
-                    var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
-                    var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
-                    var extra_fee = view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
-                    
-                    // dynamically create a css rule to add the contents //with the :after                         
-                    // selector so we don't break the datepicker //functionality 
-                    var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
-                    
-                    var extra_fee_text = '+' + extra_fee + ' ' + window.onestepConfig.delivery.current_currency_code;
-                    if(extra_fee > 0){
-                        view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
-                        view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');    
-                    }else{
-                        view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: " ";}');
-                        view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: " ";}');  
-                    }
-                    // }    
-                    jQuery(this).addClass(className);
-                    jQuery(this).attr('data-fee',extra_fee);
-                });
-            }, 0);
+                        day = (day.length == 1? '0' + day : day );
+
+                        var delivery_day_current_hover = day + '/' + (month+1) + '/' + year;
+                        var delivery_day_current_hover_for_css = day + '_' + (month+1) + '_' + year;
+                        var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
+                        var extra_fee = view.getExtraFeeByDate(delivery_day_current_hover, delivery_day_current_hover_formated);
+                        
+                        // dynamically create a css rule to add the contents //with the :after                         
+                        // selector so we don't break the datepicker //functionality 
+                        var className = 'datepicker-content-' + delivery_day_current_hover_for_css; // + '-' + extra_fee;
+                        
+                        var extra_fee_text = '+' + extra_fee + ' ' + window.onestepConfig.delivery.current_currency_code;
+                        if(extra_fee > 0){
+                            view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: "' + extra_fee_text + '";}');
+                            view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: "' + extra_fee_text + '";}');    
+                        }else{
+                            view.addCSSRule('.ui-datepicker td a.' + className + ':after {content: " ";}');
+                            view.addCSSRule('.ui-datepicker td span.' + className + ':after {content: " ";}');  
+                        }
+                        // }    
+                        jQuery(this).addClass(className);
+                        jQuery(this).attr('data-fee',extra_fee);
+                    });
+                }, 0);
+            }
+
         },
         getExtraFeeByDate: function(current_date, current_date_formated){
             var extra_fee = 0;

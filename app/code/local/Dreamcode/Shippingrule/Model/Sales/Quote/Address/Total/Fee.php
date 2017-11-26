@@ -5,6 +5,17 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
         parent::collect($address);
+
+        if(Mage::helper('core')->isModuleEnabled('Dreamcode_Shippingrule') && Mage::helper('core')->isModuleOutputEnabled('Dreamcode_Shippingrule'))
+        {
+            if(Mage::getStoreConfig('dcshippingrule/general/allow') != 1) {
+                return $this;
+            }
+        }else{
+            return $this;
+        }
+
+
         $scopeId = Mage::app()->getStore()->getStoreId();
 
         // $this->_setAmount(0);

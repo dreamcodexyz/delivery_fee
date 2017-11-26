@@ -286,6 +286,14 @@
 
     </style>
 
+
+    <?php
+
+    if(Mage::helper('core')->isModuleEnabled('Dreamcode_Shippingrule') && Mage::helper('core')->isModuleOutputEnabled('Dreamcode_Shippingrule'))
+    {
+        if(Mage::getStoreConfig('dcshippingrule/general/allow') == 1) {
+            $enable_module_shipping_fee = Mage::getStoreConfig('dcshippingrule/general/allow');
+     ?>
     <div style="display: none;">
         <div id="extra_shipping_for_delivery_date" style="overflow:auto;">
 
@@ -324,3 +332,18 @@
             
         </div>
     </div>
+
+    <?php 
+        }else{
+            $enable_module_shipping_fee = 0;
+        }
+    }else{
+        $enable_module_shipping_fee = 0;
+    }
+    ?>
+
+    <script type="text/javascript">
+    <?php
+        echo "window.onestepConfig.delivery.enable_module_shipping_fee = '" . $enable_module_shipping_fee  ."'; ";
+    ?>
+    </script>
