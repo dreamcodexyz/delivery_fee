@@ -37,8 +37,27 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
         $today = Mage::getModel('core/date')->date('m/d/Y');
         $nextDate = Date('m/d/Y', strtotime('+1 day'));
 
+
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') == 1 && $today == $deliveryDateSelected){
-            $base_fee = max($base_fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
+            
+            $slot_time = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day_enable_by_slot_time');
+            
+            $start_time = strtotime( $today );
+            $end_time = strtotime( $nextDate );
+
+            if($slot_time != 0) {
+                $slot_time = explode("-", $slot_time);
+                $start_time = strtotime( $today . ' ' . $slot_time[0] );
+                $end_time = strtotime( $today . ' ' . $slot_time[1] );
+            }
+            
+            $slot_time_now = strtotime("now");
+            //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>'; 
+
+            if($slot_time_now >= $start_time &&  $slot_time_now <= $end_time){
+                $base_fee = max($base_fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
+            }
+
         } 
 
         if(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') == 1 && $nextDate == $deliveryDateSelected){

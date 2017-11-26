@@ -272,7 +272,7 @@ div.ui-datepicker{
 
 </style>
 
-<?php
+    <?php
 
     if(Mage::helper('core')->isModuleEnabled('Dreamcode_Shippingrule') && Mage::helper('core')->isModuleOutputEnabled('Dreamcode_Shippingrule'))
     {
@@ -288,7 +288,28 @@ div.ui-datepicker{
                 $baseCurrencyCode = Mage::app()->getStore()->getBaseCurrencyCode();
                 $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
 
-                echo "window.onestepConfig.delivery.fee_same_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day') ."'; ";
+
+                $slot_time = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day_enable_by_slot_time');
+                
+                $start_time = strtotime( $today );
+                $end_time = strtotime( $nextDate );
+
+                if($slot_time != 0) {
+                    $slot_time = explode("-", $slot_time);
+                    $start_time = strtotime( $today . ' ' . $slot_time[0] );
+                    $end_time = strtotime( $today . ' ' . $slot_time[1] );
+                }
+                
+                $slot_time_now = strtotime("now");
+                //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>'; 
+
+                if($slot_time_now >= $start_time &&  $slot_time_now <= $end_time){
+                    $fee_same_day = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day');
+                }else{
+                    $fee_same_day = 0;
+                }
+
+                echo "window.onestepConfig.delivery.fee_same_day = '" . $fee_same_day ."'; ";
                 echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
                 
                 echo "window.onestepConfig.delivery.fee_next_day = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_next_day') ."'; ";
@@ -308,11 +329,10 @@ div.ui-datepicker{
                     ?>
                 </script>
 
-            <h3><?php echo $this->__('Extra shipping fee for delivery date');?> </h3>
+            <h3><?php echo $this->__('Extra shipping fee for delivery date') . " " ;?> <span id="extra_shipping_note_for_delivery_date"></span></h3>
             <p>
                 <span style="display: none;" id="dc_curent_delivery_date"><?php echo date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()); ?></span>
                 <p><?php echo $this->__('Fee: '); ?><span id="extra_shipping_fee_for_delivery_date">0</span></p>
-                <p><?php echo $this->__('Note: '); ?><span id="extra_shipping_note_for_delivery_date"></span></p>
             </p>
             
         </div>

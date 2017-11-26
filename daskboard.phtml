@@ -323,11 +323,10 @@
                     ?>
                 </script>
 
-            <h3><?php echo $this->__('Extra shipping fee for delivery date');?> </h3>
+            <h3><?php echo $this->__('Extra shipping fee for delivery date') . " " ;?> <span id="extra_shipping_note_for_delivery_date"></span></h3>
             <p>
                 <span style="display: none;" id="dc_curent_delivery_date"><?php echo date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()); ?></span>
                 <p><?php echo $this->__('Fee: '); ?><span id="extra_shipping_fee_for_delivery_date">0</span></p>
-                <p><?php echo $this->__('Note: '); ?><span id="extra_shipping_note_for_delivery_date"></span></p>
             </p>
             
         </div>
