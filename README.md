@@ -300,8 +300,8 @@ div.ui-datepicker{
                     $end_time = strtotime( $today . ' ' . $slot_time[1] );
                 }
                 
-                $slot_time_now = strtotime("now");
-                //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>'; 
+                $slot_time_now = Mage::getModel('core/date')->timestamp(time()); //strtotime(Mage::getSingleton('core/date')->gmtDate());
+                //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>';  
 
                 if($slot_time_now >= $start_time &&  $slot_time_now <= $end_time){
                     $fee_same_day = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day');
