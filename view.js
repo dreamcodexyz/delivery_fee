@@ -1355,12 +1355,14 @@ window.OneStep.$(document).ready(function($){
 
                     var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
                     var delivery_day_current_hover_formated =  (month+1) + '/' + day + '/' + year;
-                    jQuery.each(configValue, function(i, item) {
-                        if(delivery_day_current_hover_formated == configValue[i].date){
-                            extra_fee = Math.max(extra_fee, configValue[i].fee) ;
-                            extra_note = configValue[i].note;
-                        }
-                    });
+                    if ( typeof(window.onestepConfig.delivery.special_days) !== "undefined" && configValue !== null ) {
+                        jQuery.each(configValue, function(i, item) {
+                            if(delivery_day_current_hover_formated == configValue[i].date){
+                                extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+                                extra_note = configValue[i].note;
+                            }
+                        });
+                    }
                     
                     window.OneStep.$(".ui-datepicker #extra_shipping_fee_for_delivery_date").text( extra_fee );
                     window.OneStep.$(".ui-datepicker #extra_shipping_note_for_delivery_date").text( extra_note );
@@ -1504,11 +1506,13 @@ window.OneStep.$(document).ready(function($){
             } 
 
             var configValue = jQuery.parseJSON(window.onestepConfig.delivery.special_days);
-            jQuery.each(configValue, function(i, item) {
-                if(current_date_formated == configValue[i].date){
-                    extra_fee = Math.max(extra_fee, configValue[i].fee) ;
-                }
-            }); 
+            if ( typeof(window.onestepConfig.delivery.special_days) !== "undefined" && configValue !== null ) {
+                jQuery.each(configValue, function(i, item) {
+                    if(current_date_formated == configValue[i].date){
+                        extra_fee = Math.max(extra_fee, configValue[i].fee) ;
+                    }
+                }); 
+            }
             return extra_fee;
         },
         getAmPm: function(d){
