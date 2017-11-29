@@ -54,7 +54,7 @@ class Dreamcode_Shippingrule_Model_Sales_Quote_Address_Total_Fee extends Mage_Sa
             $slot_time_now = Mage::getModel('core/date')->timestamp(time()); //strtotime(Mage::getSingleton('core/date')->gmtDate());
             //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>'; 
 
-            if($slot_time_now >= $start_time &&  $slot_time_now <= $end_time){
+            if($slot_time_now >= $start_time && $slot_time_now <= $end_time){
                 $base_fee = max($base_fee, Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'));
             }
 
