@@ -306,6 +306,9 @@
 
                 $slot_time = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day_enable_by_slot_time');
                 
+                $today = Mage::getModel('core/date')->date('m/d/Y');
+                $nextDate = Date('m/d/Y', strtotime('+1 day'));
+
                 $start_time = strtotime( $today );
                 $end_time = strtotime( $nextDate );
 
@@ -319,10 +322,14 @@
                 //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>'; 
 
                 if($slot_time_now >= $start_time &&  $slot_time_now <= $end_time){
-                    $fee_same_day = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day');
+                    $fee_same_day = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day');
                 }else{
                     $fee_same_day = 0;
                 }
+                echo "window.onestepConfig.delivery.slot_time_now = '" . $slot_time_now ."'; ";
+                echo "window.onestepConfig.delivery.start_time = '" . $start_time ."'; ";
+                echo "window.onestepConfig.delivery.end_time = '" . $end_time ."'; ";
+                echo "window.onestepConfig.delivery.fee_same_day_config = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day') ."'; ";
 
                 echo "window.onestepConfig.delivery.fee_same_day = '" . $fee_same_day ."'; ";
                 echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
@@ -339,9 +346,11 @@
                         $special_days_data[$key]['fee'] = Mage::helper('directory')->currencyConvert($value['fee'], $baseCurrencyCode, $currentCurrencyCode);
                     }
                     echo "window.onestepConfig.delivery.special_days = '" . json_encode($special_days_data) ."'; ";
-                    echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
                 }
+
+                echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
                     ?>
+
                 </script>
 
             <h3><?php echo $this->__('Extra shipping fee for delivery date') . " " ;?> <span id="extra_shipping_note_for_delivery_date"></span></h3>

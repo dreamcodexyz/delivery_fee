@@ -234,47 +234,53 @@ replate with:
 # Open and add this code to end of file: "/app/design/frontend/default/ma_flower/template/mw_onestepcheckout/daskboard.phtml"
 
 ```
-<style>
-div.ui-datepicker{
-        font-size:16px;
-    }
-    .ui-datepicker td span,
-    .ui-datepicker td a{
-        font-size: 12px;
-    }
+    <style>
+        div.ui-datepicker{
+            font-size:16px;
+            width: 20em;
+        }
+        .ui-datepicker td span,
+        .ui-datepicker td a{
+            font-size: 12px;
+        }
 
-    .ui-datepicker td span:after,
-    .ui-datepicker td a:after
-    {
-        content: "";
-        display: block;
-        font-size: 10px;
-        width: 30px;
-        overflow: hidden;
-        margin: 0;
-        padding: 0;
-        text-align: right;
-        color: green;
-        direction: ltr;
-        min-height: 13px;
-    }
-    .ui-datepicker td{
-        position: relative;
-    }
+        .ui-datepicker td span:after,
+        .ui-datepicker td a:after
+        {
+            content: "";
+            display: block;
+            font-size: 10px;
+            width: 38px;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            text-align: right;
+            color: green;
+            direction: ltr;
+            min-height: 20px;
+        }
+        .ui-datepicker td{
+            position: relative;
+        }
 
-    .ui-state-default, .ui-widget-content .ui-state-default{
-        border: none;
-    }
+        .ui-state-default, .ui-widget-content .ui-state-default{
+            border: none;
+        }
 
-    .ui-datepicker td{
-        background: #5ba8e9;
-        border: 1px solid #cccccc;
-    }
-    .ui-datepicker-other-month, .ui-widget-content .ui-datepicker-other-month{
-        background: transparent;
-    }
+        .ui-datepicker td{
+            background: #5ba8e9;
+            border: 1px solid #cccccc;
+        }
+        .ui-datepicker-other-month, .ui-widget-content .ui-datepicker-other-month{
+            background: transparent;
+        }
 
-</style>
+        .ui-datepicker table{
+            font-size: 0.9em;
+        }
+
+    </style>
+
 
     <?php
 
@@ -295,6 +301,9 @@ div.ui-datepicker{
 
                 $slot_time = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day_enable_by_slot_time');
                 
+                $today = Mage::getModel('core/date')->date('m/d/Y');
+                $nextDate = Date('m/d/Y', strtotime('+1 day'));
+
                 $start_time = strtotime( $today );
                 $end_time = strtotime( $nextDate );
 
@@ -305,13 +314,17 @@ div.ui-datepicker{
                 }
                 
                 $slot_time_now = Mage::getModel('core/date')->timestamp(time()); //strtotime(Mage::getSingleton('core/date')->gmtDate());
-                //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>';  
+                //echo ($slot_time_now .' '. $start_time .' '. $end_time) .'<br>'; 
 
                 if($slot_time_now >= $start_time &&  $slot_time_now <= $end_time){
                     $fee_same_day = Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_same_day');
                 }else{
                     $fee_same_day = 0;
                 }
+                echo "window.onestepConfig.delivery.slot_time_now = '" . $slot_time_now ."'; ";
+                echo "window.onestepConfig.delivery.start_time = '" . $start_time ."'; ";
+                echo "window.onestepConfig.delivery.end_time = '" . $end_time ."'; ";
+                echo "window.onestepConfig.delivery.fee_same_day_config = '" . Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day') ."'; ";
 
                 echo "window.onestepConfig.delivery.fee_same_day = '" . $fee_same_day ."'; ";
                 echo "window.onestepConfig.delivery.fee_for_same_day = '" . Mage::helper('directory')->currencyConvert(Mage::app()->getStore($scopeId)->getConfig('dcshippingrule/general/fee_for_same_day'), $baseCurrencyCode, $currentCurrencyCode) ."'; ";
@@ -328,9 +341,11 @@ div.ui-datepicker{
                         $special_days_data[$key]['fee'] = Mage::helper('directory')->currencyConvert($value['fee'], $baseCurrencyCode, $currentCurrencyCode);
                     }
                     echo "window.onestepConfig.delivery.special_days = '" . json_encode($special_days_data) ."'; ";
-                    echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
                 }
+
+                echo "window.onestepConfig.delivery.current_day = '" . date('d/m/Y', Mage::getModel('core/date')->gmtTimestamp()) ."'; ";
                     ?>
+
                 </script>
 
             <h3><?php echo $this->__('Extra shipping fee for delivery date') . " " ;?> <span id="extra_shipping_note_for_delivery_date"></span></h3>

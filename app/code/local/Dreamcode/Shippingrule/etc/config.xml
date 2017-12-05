@@ -102,6 +102,16 @@
        </sales>
 
         <events>
+            <paypal_prepare_line_items>
+                <observers>
+                    <customfee_paypal>
+                        <type>singleton</type>
+                        <class>Dreamcode_Shippingrule_Model_Observer</class>
+                        <method>paypal_prepare_line_items</method>
+                    </customfee_paypal>
+                </observers>
+            </paypal_prepare_line_items>
+            
             <controller_action_postdispatch_onestepcheckout_index_save>
                 <observers>
                     <save_osc_before>
